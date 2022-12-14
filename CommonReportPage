@@ -15,7 +15,7 @@
         }
     }
     
-    
+   
     @Step("Добавление записи и проверка времени окончания операции")
     public static void addTimeEndByOperation() {
         $(byAttribute(ATT_NAME, OPERATION.getAttValue())).shouldBe(visible.because("Секция <Операции не отображается>"));
