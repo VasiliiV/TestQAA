@@ -1,17 +1,35 @@
 @Step("Проверка присутствия записей в секции {sectionName}} и их удаление")
-    public static void clearSection() {
+    public static void clearSectionAndAddNewEntry(String sectionName) {
+        SelenideElement chooseAll = $(byAttribute("data-test-section", sectionName)).find("mat-checkbox").find("span");
         sleep(1000);
-        if (chooseAllCheckbox.isDisplayed()) {
-            chooseAllCheckbox.click();
+        if (chooseAll.isDisplayed()) {
+            chooseAll.click();
             $(byTitle("Удалить")).shouldHave(visible.because("Кнопка удалить не отображается")).click();
-            $(byText("Да, удалить")).click();
-        } else if (!chooseAllCheckbox.isDisplayed()) {
-            SelenideElement addRecords = $x("//app-icon-button-text[@data-test-section-toolbar-button=\"DailyOperation__\"][1]");
+            $(byText("Да, удалить")).click(); //delete and add a new entry
+
+            SelenideElement addRecords = $(byAttribute("data-test-section", sectionName)).find(byText("Добавить"));
             Actions actions = new Actions(WebDriverRunner.getWebDriver());
             actions
                     .click(addRecords)
                     .build()
                     .perform();
+            finishTime.shouldBe(visible);
+            int countRow = $$(byAttribute(ATT_NAME, OPERATION.getAttValue())).size();
+            assertThat(countRow)
+                    .as("Строка не добавилась в секцию")
+                    .isGreaterThan(countRow - 1);
+        } else if (!chooseAll.isDisplayed()) {
+            SelenideElement addRecords = $(byAttribute("data-test-section", sectionName)).find(byText("Добавить"));
+            Actions actions = new Actions(WebDriverRunner.getWebDriver());
+            actions
+                    .click(addRecords)
+                    .build()
+                    .perform();
+            finishTime.shouldBe(visible);
+            int countRow = $$(byAttribute(ATT_NAME, OPERATION.getAttValue())).size();
+            assertThat(countRow)
+                    .as("Строка не добавилась в секцию")
+                    .isGreaterThan(countRow - 1);
         }
     }
     
