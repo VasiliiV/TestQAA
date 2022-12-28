@@ -13,7 +13,6 @@ public class test {
     }
 
     public static int minArray(int[][] array) {
-
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
